@@ -9,7 +9,7 @@ from scipy.fft import dct
 
 SAMPLE_RATE = 16000
 MAX_BYTES = 20 * 1024 * 1024
-MAX_SECONDS = 60
+MAX_SECONDS = 180
 FEATURE_VERSION = 1
 
 
@@ -29,7 +29,7 @@ def decode_audio(data):
                 measured = (f"lebih dari {MAX_SECONDS} detik" if duration > MAX_SECONDS
                             else f"{duration:.6f} detik")
                 raise ValueError(
-                    f"Durasi audio terbaca {measured}; batas yang didukung 0,3–60 detik. "
+                    f"Durasi audio terbaca {measured}; batas yang didukung 0,3–{MAX_SECONDS} detik. "
                     "Jika durasi di pemutar berbeda, ekspor ulang sebagai WAV PCM lalu unggah kembali."
                 )
             samples = frames.mean(axis=1)

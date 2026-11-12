@@ -28,7 +28,7 @@ Buka URL lokal yang ditampilkan, biasanya http://localhost:8501.
 5. Uji rekaman baru yang belum menjadi referensi pada tab Analisis & identifikasi.
 6. Kelola, putar, hapus, atau ekspor audio + metadata + fitur di tab Dataset.
 
-Batas input: 20 MB, 0,3–60 detik, 8–192 kHz, maksimal 8 kanal.
+Batas input: 20 MB, 0,3–180 detik (3 menit), 8–192 kHz, maksimal 8 kanal.
 Audio disimpan sebagai WAV mono 16 kHz yang dinormalisasi; simpan file asli terpisah
 jika dibutuhkan untuk riset. Database: `data/samples.sqlite3`, dibuat otomatis.
 Audio duplikat setelah normalisasi ditolak. Label dan audio disimpan lokal.

@@ -21,10 +21,10 @@ def run():
     samples = decode_audio(audio)
     features = extract_features(samples)
     assert features.shape == (39,) and np.isfinite(features).all()
-    for count in (4800, 960000):  # Batas tepat 0,3 dan 60 detik.
+    for count in (4800, 16000 * 121, 16000 * 180):  # Minimum, >2 menit, dan maksimum.
         tone = 0.5 * np.sin(2 * np.pi * 650 * np.arange(count) / 16000)
         assert len(decode_audio(wav_bytes(tone))) == count
-    for count in (4799, 960001):
+    for count in (4799, 16000 * 180 + 1):
         tone = 0.5 * np.sin(2 * np.pi * 650 * np.arange(count) / 16000)
         try:
             decode_audio(wav_bytes(tone))
@@ -41,7 +41,7 @@ def run():
             source.__len__.return_value = 16000 * 999
             source.read.side_effect = actual.read
             assert len(decode_audio(audio)) == 32000
-            source.read.assert_called_once_with(960001, dtype="float32", always_2d=True)
+            source.read.assert_called_once_with(16000 * 180 + 1, dtype="float32", always_2d=True)
     for invalid in (b"", b"not audio", wav_bytes(np.zeros(16000)), wav_bytes(first[:100])):
         try:
             decode_audio(invalid)

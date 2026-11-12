@@ -1,0 +1,11 @@
+# Project context
+- Root: /Users/macbookpro/Documents/GitHub/spektogram; branch main; base commit d2f8929d6574a6aec9fe5c32b64d2b71aa2c883b.
+- Streamlit app for audio spectrograms, MFCC matching, SQLite storage, and dataset exports.
+- Changed audio input maximum from 60 to 180 seconds (user requested more than 2 minutes). Size limit remains 20 MB. app.py labels and decoder errors use MAX_SECONDS; README documents 3 minutes.
+- test_app.py checks 121 seconds, exact 180 seconds, and rejection one sample beyond maximum; retains minimum-duration and bounded-read checks.
+- Validation: full test_app.py suite passed with exit code 0 using PYTHONDONTWRITEBYTECODE=1 and /Users/macbookpro/Desktop/Spektogram/.venv/bin/python. System python lacks streamlit. git diff --check passed. Restored generated tracked audio_analysis bytecode after test execution.
+- SHA-256 fingerprints:
+  - audio_analysis.py: eee5cb937f591d203cf969b9453638c2630490425495e0c7355158348a5e4e3b
+  - app.py: 597fc3fda0be911d8a84cf076e2af1d6f919928e42fa86b3d978907eb99b9a04
+  - test_app.py: ff41ff55751bb94178e9ff20192b61098519bd51795a7748f5b262521283bbf1
+  - README.md: 5185feedf45d25749cbbcf17cdbf028a4c454a2dedb9c89b56f6461d5a5b5619

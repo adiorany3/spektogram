@@ -7,7 +7,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 import streamlit as st
 
-from audio_analysis import (FEATURE_VERSION, SAMPLE_RATE, decode_audio,
+from audio_analysis import (FEATURE_VERSION, MAX_SECONDS, SAMPLE_RATE, decode_audio,
                             extract_features, rank_matches, wav_bytes)
 from spectrogram_view import show_analysis
 from dataset_export import build_training_zip
@@ -28,9 +28,9 @@ def analyze(data):
 input_tab, dataset_tab, guide_tab = st.tabs(["Analisis & identifikasi", "Dataset", "Panduan"])
 with input_tab:
     source = st.radio("Sumber audio", ["Rekam mikrofon", "Unggah file"], horizontal=True)
-    uploaded = (st.file_uploader("Audio WAV, FLAC, atau OGG · maksimal 20 MB / 60 detik",
+    uploaded = (st.file_uploader(f"Audio WAV, FLAC, atau OGG · maksimal 20 MB / {MAX_SECONDS} detik",
                                type=["wav", "flac", "ogg"])
-                if source == "Unggah file" else st.audio_input("Rekam suara ayam (0,3–60 detik)"))
+                if source == "Unggah file" else st.audio_input(f"Rekam suara ayam (0,3–{MAX_SECONDS} detik)"))
     if uploaded is not None:
         try:
             samples, features = analyze(uploaded.getvalue())
