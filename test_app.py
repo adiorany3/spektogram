@@ -110,7 +110,9 @@ show_analysis(0.5 * np.sin(2 * np.pi * 650 * np.arange(16000) / 16000))
 """
     view = AppTest.from_string(script).run(timeout=30)
     assert not view.exception, view.exception
-    assert len(view.get("download_button")) == 3
+    assert len(view.get("download_button")) == 4
+    assert any(button.label == "Unduh PNG 3D" for button in view.get("download_button"))
+    assert any(header.value == "Spektrogram 3D" for header in view.subheader)
     controls = list(view.selectbox) + list(view.slider) + list(view.checkbox)
     assert len(controls) == 9
     assert all(control.proto.help.strip() for control in controls), "Bantuan pengaturan belum lengkap"

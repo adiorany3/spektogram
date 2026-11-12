@@ -54,6 +54,9 @@ Periksa catatan/audio sebelum dataset dipublikasikan.
 
 ### Spektrogram lanjutan
 
+- Spektrogram 3D statis: waktu × frekuensi × daya relatif (dB), dengan unduhan PNG 3D.
+  Mengikuti rentang waktu/frekuensi, skala, palet, dan rentang dinamis pilihan.
+  Mesh tampilan dibatasi 128 bin × 256 bingkai agar ringan; statistik dan grafik 2D tetap utuh.
 - FFT 256–4096 sampel, overlap 0–90%, window Hann/Hamming/Blackman/Tukey.
 - Skala frekuensi linear, logaritmik, atau Mel (transformasi sumbu STFT, bukan filterbank).
 - Zoom waktu/frekuensi, rentang dinamis 20–120 dB, serta pilihan palet warna.

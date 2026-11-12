@@ -1,11 +1,11 @@
 # Project context
-- Root: /Users/macbookpro/Documents/GitHub/spektogram; branch main; base commit d2f8929d6574a6aec9fe5c32b64d2b71aa2c883b.
-- Streamlit app for audio spectrograms, MFCC matching, SQLite storage, and dataset exports.
-- Changed audio input maximum from 60 to 180 seconds (user requested more than 2 minutes). Size limit remains 20 MB. app.py labels and decoder errors use MAX_SECONDS; README documents 3 minutes.
-- test_app.py checks 121 seconds, exact 180 seconds, and rejection one sample beyond maximum; retains minimum-duration and bounded-read checks.
-- Validation: full test_app.py suite passed with exit code 0 using PYTHONDONTWRITEBYTECODE=1 and /Users/macbookpro/Desktop/Spektogram/.venv/bin/python. System python lacks streamlit. git diff --check passed. Restored generated tracked audio_analysis bytecode after test execution.
+- Root: /Users/macbookpro/Documents/GitHub/spektogram; branch main; base commit 1937361babca4e085c0d55db39fde934473db665.
+- Streamlit audio analysis with NumPy/SciPy, Matplotlib, SQLite and MFCC matching. Input remains capped at 180 seconds and 20 MB.
+- spectrogram_view.py show_analysis now renders a static Matplotlib 3D surface before existing 2D plots: time, transformed frequency, relative power dB. Uses current crop, scale, palette and dynamic range; downloadable PNG. No new dependencies. Mesh capped at 128 frequency bins by 256 time frames; identification, statistics and dataset exports unchanged.
+- README documents 3D and limits. test_app.py checks 3D heading/download and existing scale/zoom paths.
+- Validation: full test_app.py suite passed, explicitly confirmed subprocess return code 0 using /Users/macbookpro/Desktop/Spektogram/.venv/bin/python with PYTHONDONTWRITEBYTECODE=1 MPLBACKEND=Agg. git diff --check passed. No interactive rotation; add only if requested.
+- Working changes: README.md, spectrogram_view.py, test_app.py.
 - SHA-256 fingerprints:
-  - audio_analysis.py: eee5cb937f591d203cf969b9453638c2630490425495e0c7355158348a5e4e3b
-  - app.py: 597fc3fda0be911d8a84cf076e2af1d6f919928e42fa86b3d978907eb99b9a04
-  - test_app.py: ff41ff55751bb94178e9ff20192b61098519bd51795a7748f5b262521283bbf1
-  - README.md: 5185feedf45d25749cbbcf17cdbf028a4c454a2dedb9c89b56f6461d5a5b5619
+  - spectrogram_view.py: 6833f00a15071edcafcb5c0382b4f33e8aa851cddbfa3bc8e85973269a4b4d68
+  - test_app.py: f03705055a81c44d41c832f1bebc5028ed07ae12cb1269ed8eb5f0c8e97f0db1
+  - README.md: 5f1da986698ee632cdbdc11e89a38b7680a2bbe222a0e06d53592a2a29ab0ead

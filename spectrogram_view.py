@@ -57,6 +57,37 @@ def show_analysis(samples):
     c.metric("Centroid rerata", f"{np.nanmean(statistics['centroid_hz']):.1f} Hz" if np.isfinite(statistics['centroid_hz']).any() else "Tidak ada sinyal")
     d.metric("RMS pilihan", f"{np.sqrt(np.mean(segment ** 2)):.4f}")
     st.caption(f"Resolusi bin: {SAMPLE_RATE / n_fft:.2f} Hz · window: {1000 * n_fft / SAMPLE_RATE:.1f} ms · hop: {1000 * (n_fft - overlap) / SAMPLE_RATE:.1f} ms. FFT besar memperinci frekuensi tetapi mengaburkan perubahan waktu.")
+    st.subheader("Spektrogram 3D")
+    fig3d = plt.figure(figsize=(12, 7), constrained_layout=True)
+    axis3d = fig3d.add_subplot(111, projection="3d")
+    visible = np.flatnonzero((frequencies >= low) & (frequencies <= high)
+                             & ((frequencies > 0) if scale == "Logaritmik" else True))
+    # ponytail: batasi mesh 128×256 untuk audio 3 menit; naikkan jika detail render diperlukan.
+    frequency_indices = visible[np.unique(np.linspace(0, len(visible) - 1, min(128, len(visible))).astype(int))]
+    time_indices = np.unique(np.linspace(0, len(times) - 1, min(256, len(times))).astype(int))
+    hz = frequencies[frequency_indices]
+    positions = (np.log10(hz) if scale == "Logaritmik" else
+                 2595 * np.log10(1 + hz / 700) if scale == "Mel" else hz)
+    x, y = np.meshgrid(times[time_indices], positions)
+    surface = axis3d.plot_surface(
+        x, y, np.clip(db[np.ix_(frequency_indices, time_indices)], -dynamic_range, 0),
+        cmap=palette, vmin=-dynamic_range, vmax=0, rcount=128, ccount=256,
+        linewidth=0, antialiased=True)
+    ticks = np.unique(np.linspace(0, len(hz) - 1, min(6, len(hz))).astype(int))
+    axis3d.set_yticks(positions[ticks], [f"{value:g}" for value in hz[ticks]])
+    axis3d.set(xlabel="Waktu (detik)", ylabel=f"Frekuensi (Hz, {scale})",
+               zlabel="Daya relatif (dB)", zlim=(-dynamic_range, 0),
+               title="Analisa Suara — Spektrogram 3D")
+    axis3d.view_init(elev=30, azim=-60)
+    fig3d.colorbar(surface, ax=axis3d, shrink=0.6, pad=0.1, label="dB relatif puncak")
+    st.pyplot(fig3d)
+    png3d = BytesIO()
+    fig3d.savefig(png3d, format="png", dpi=160)
+    plt.close(fig3d)
+    st.download_button("Unduh PNG 3D", png3d.getvalue(), "spektrogram-3d.png", "image/png")
+    st.caption("Ketinggian dan warna menunjukkan daya relatif, bukan posisi sumber suara. "
+               "Tampilan 3D statis diringkas hingga 128 bin frekuensi × 256 bingkai waktu; "
+               "grafik 2D dan statistik di bawah tetap memakai resolusi asli.")
     fig, axes = plt.subplots(3, 1, figsize=(12, 8), constrained_layout=True,
                              gridspec_kw={"height_ratios": [1, 4, 1]}, facecolor="#f8fafc")
     fig.suptitle("Analisa Suara (Spektrogram)", fontsize=16, fontweight="bold", color="#0f172a")
